@@ -1,0 +1,24 @@
+#navigationBar {
+  background-blend-mode: screen;
+  background-position: center;
+  background-size: 100%;
+  background-color: white;
+  margin: 50px 0;
+  z-index: 999;
+  border-bottom: #a2a2a2 1px solid;
+}
+.nav-btn {
+  margin-right:0;
+}
+
+@media only screen and (max-width: 767px) {
+  #navigationBar {
+    margin:0;
+  }
+}
+
+@media only screen and (max-height: 650px) {
+  #navigationBar {
+    margin-top: 0px;
+  }
+}

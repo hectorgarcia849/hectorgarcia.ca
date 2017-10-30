@@ -1,0 +1,23 @@
+
+
+<div class="portfolio-grid-container">
+
+  <div class="portfolio-tile-container" *ngFor="let card of cards; let i=index;" (click)="openModal(template)">
+      <img class="portfolio-tile-image" [src]="card.imagePath">
+      <div class="portfolio-tile-container-title">
+      </div>
+    <ng-template #template>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">{{card.title}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{card.description}}
+      </div>
+      <a target="_blank" [href]=card.githubURL class="btn btn-outline-primary" style="border: none; border-radius: 0;" *ngIf="card.githubURL != ''">Github</a>
+      <a target="_blank" [href]=card.website class="btn btn-outline-primary" style="border: none; border-radius: 0;" *ngIf="card.website != ''">Website</a>
+    </ng-template>
+  </div>
+</div>

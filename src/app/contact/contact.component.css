@@ -1,0 +1,24 @@
+
+.contact-container {
+
+  height:700px;
+  margin-bottom: 50px;
+  margin-left: 8%;
+  background-color:#404040;
+  background-blend-mode: lighten;
+}
+
+.contact-inner-container {
+  border: 1px solid #ffffff;
+  margin-left: 5%;
+  margin-top: 12.5%;
+  height: 350px;
+}
+
+p {
+  color:white;
+}
+
+.contact-text {
+  color: #262626;
+}
