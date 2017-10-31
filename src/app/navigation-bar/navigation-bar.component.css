@@ -5,7 +5,7 @@
   background-color: white;
   margin: 50px 0;
   z-index: 999;
-  border-bottom: #a2a2a2 1px solid;
+  border-bottom: rgba(28, 14, 75, 0.25) 1px solid;
 }
 .nav-btn {
   margin-right:0;

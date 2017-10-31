@@ -21,7 +21,7 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
   state;
   routerNavEventSubscription: Subscription;
   routes = routes;
-
+  selectedPath;
   constructor(private router: Router, private navService: NavigationService) {
   }
 
@@ -31,8 +31,9 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
       .filter((event) => event instanceof NavigationStart)
       .subscribe(
         (nav: any) => {
-          // console.log(nav.url.substr(1));
           const newPath = nav.url.substr(1);
+          this.selectedPath = newPath;
+          console.log(this.selectedPath);
           this.navService.broadcastRouteChange(newPath);
           const newState = this.getAnimationStateUpdate(newPath);
           this.setAnimationState(newState);

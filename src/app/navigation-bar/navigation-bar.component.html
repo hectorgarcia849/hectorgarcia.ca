@@ -1,7 +1,7 @@
 <nav [@navBarAnimation]="state" id="navigationBar">
   <section class="buttons">
     <div class="container">
-      <a *ngFor="let route of routes.slice(1)" class="nav-btn hover-btn hover-btn-2" (click)="onRouteSelected(route)">{{ route.path }}</a>
+      <a *ngFor="let route of routes.slice(1)" class="nav-btn hover-btn hover-btn-2" (click)="onRouteSelected(route)" [ngClass]="{'selected': route.path === selectedPath}">{{ route.path }}</a>
     </div>
   </section>
 </nav>
