@@ -1,5 +1,12 @@
-<mat-grid-list>
-  <div *ngFor="let topic of topics" style="height: 300px; width: 400px; border: 1px solid black">
-    <h3>{{ topic }}</h3>
-  </div>
-</mat-grid-list>
+
+<div class="tabs-content">
+  <tabset [justified]="true" #tabs>
+    <tab class=".btn-primary" *ngFor="let topic of topics" [heading]="capitalize(topic)" (select)="setSelectedTopic(topic)">
+      <div *ngIf="isSelectedTopic('software craftsmanship')">
+        <div *ngFor="let article of softwareCraftsmanshipArticles">
+          <app-article [article]="article"></app-article>
+        </div>
+      </div>
+    </tab>
+  </tabset>
+</div>

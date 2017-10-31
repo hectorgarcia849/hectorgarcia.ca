@@ -77,7 +77,7 @@ $white: #262626;
 }
 
 .hover-btn-2:hover,
-.btn-2:active {
+.btn-2:hover {
   letter-spacing: 5px;
 }
 
@@ -85,7 +85,7 @@ $white: #262626;
 .hover-btn-2:before {
   backface-visibility: hidden;
   border: 1px solid rgba($white, 0);
-  bottom: 0px;
+  bottom: 0;
   content: " ";
   display: block;
   margin: 0 auto;

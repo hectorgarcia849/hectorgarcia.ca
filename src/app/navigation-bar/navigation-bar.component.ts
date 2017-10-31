@@ -31,9 +31,8 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
       .filter((event) => event instanceof NavigationStart)
       .subscribe(
         (nav: any) => {
-          const newPath = nav.url.substr(1);
+          const newPath = nav.url.substr(1).split('/', 1)[0].split('?', 1)[0];
           this.selectedPath = newPath;
-          console.log(this.selectedPath);
           this.navService.broadcastRouteChange(newPath);
           const newState = this.getAnimationStateUpdate(newPath);
           this.setAnimationState(newState);
@@ -48,7 +47,8 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
     /*Timer delay used on route selection as Angular framework
     has a bug that does not allow exiting shared using the
     routerLink directive. */
-    this.navService.broadcastRouteChange(selectedRoute.path);
+    const path = selectedRoute.path.split('/', 1)[0];
+    this.navService.broadcastRouteChange(path);
     const timer = Observable.timer(500);
     timer.subscribe(() => {
       this.setAnimationState(selectedRoute.state);
@@ -62,7 +62,7 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
 
   getAnimationStateUpdate(newPath: string) {
     return this.routes.find(function(route) {
-      return route.path === newPath
+      return route.path === newPath;
     }).state;
   }
 }

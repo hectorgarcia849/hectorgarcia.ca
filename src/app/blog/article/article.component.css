@@ -1,0 +1,51 @@
+.article {
+  background-color: rgba(100, 48, 239, 0.03);
+  margin: 20px 15%;
+  width: 70%;
+  padding: 20px 0;
+}
+.article-title-header {
+  text-align: center;
+  padding: 20px 20px;
+  border-top: 5px solid #262626;
+  border-bottom: 5px solid #262626;
+  border-style: double;
+  border-left: none;
+  border-right: none;
+  margin: 20px 5%;
+}
+
+.article-postDate {
+  font-size: 1em;
+  font-family: "Times New Roman";
+  font-style: italic;
+}
+
+.article-title {
+  font-family: "Times New Roman";
+  font-size: 2.75em;
+}
+
+.article-content {
+  margin: 0 10%;
+  width: 80%;
+}
+
+.article-chips {
+  margin: 0 10%;
+  width: 80%;
+}
+
+.article-chip {
+  font-size: 0.5em;
+  padding: 2px 5px !important;
+}
+
+.article-author {
+  margin: 0 10%;
+  text-align: right;
+}
+
+.article-content-p {
+  text-align: justify;
+}

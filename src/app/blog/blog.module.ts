@@ -4,16 +4,20 @@ import {BlogComponent} from './blog.component';
 import {CommonModule} from '@angular/common';
 import {BlogRoutingModule} from './blog.routing.module';
 import {MaterialsModule} from '../materials/materials.module';
+import {TabsModule} from 'ngx-bootstrap';
+import {ArticleComponent} from "./article/article.component";
 
 @NgModule({
   declarations: [
     ArticleGridComponent,
-    BlogComponent
+    BlogComponent,
+    ArticleComponent
   ],
   imports: [
     CommonModule,
     BlogRoutingModule,
-    MaterialsModule
+    MaterialsModule,
+    TabsModule.forRoot()
   ],
 })
 
