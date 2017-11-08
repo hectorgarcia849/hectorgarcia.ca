@@ -3,6 +3,11 @@
     articles.
   </h1>
 </div>
+
+<div *ngIf="isLoggedIn">
+  <app-post-article></app-post-article>
+</div>
+
 <div>
   <app-article-grid></app-article-grid>
 </div>

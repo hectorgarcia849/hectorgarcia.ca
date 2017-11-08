@@ -1,12 +1,13 @@
 
 <div class="tabs-content">
-  <tabset [justified]="true" #tabs>
-    <tab class=".btn-primary" *ngFor="let topic of topics" [heading]="capitalize(topic)" (select)="setSelectedTopic(topic)">
-      <div *ngIf="isSelectedTopic('software craftsmanship')">
-        <div *ngFor="let article of softwareCraftsmanshipArticles">
+  <mat-tab-group [(selectedIndex)]="selectedTab" (selectedIndexChange)="updateQueryParams(selectedTab)">
+    <mat-tab
+      *ngFor="let topic of topics; let i=index;"
+      [label]="topic | titlecase"
+    >
+        <div *ngFor="let article of articles[getSelectedTopic()].article">
           <app-article [article]="article"></app-article>
         </div>
-      </div>
-    </tab>
-  </tabset>
+    </mat-tab>
+  </mat-tab-group>
 </div>

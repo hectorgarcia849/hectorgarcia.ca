@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {AuthenticationService} from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+
+  constructor(private authService: AuthenticationService) {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      this.authService.updateLoggedIn(true);
+    }
+  }
+
 }

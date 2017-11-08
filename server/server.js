@@ -1,12 +1,24 @@
 require('./config/config');
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const path = require('path');
 const compression = require('compression');
+const cors = require('cors');
+const {mongoose} = require('./db/mongoose'); //connects to db
+
+const {usersRouter} = require('./routes/users')
+const {articlesRouter} = require('./routes/articles');
 
 app.use(compression());
+app.use(bodyParser.json());
+app.use(cors());
+
 app.use(express.static(__dirname + '/../dist'));
+app.use('/services/users', usersRouter);
+app.use('/services/articles', articlesRouter);
+
 app.listen(process.env.PORT || 8100);
 
 //PathLocationStrategy for Angular routing (ensure angular handles routing)

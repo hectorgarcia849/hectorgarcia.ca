@@ -1,4 +1,14 @@
 .tabs-content {
-  width: 96%;
-  margin: 0 2%;
+  width: 70%;
+  margin: 0 15% 50px 15%;
+  height: auto;
+  max-height: 1000px;
+  overflow: auto;
+}
+
+@media only screen and (max-width: 600px) {
+  .tabs-content {
+    width: 100%;
+    margin: 0 0;
+  }
 }

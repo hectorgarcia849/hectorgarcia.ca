@@ -13,12 +13,14 @@ import {NavigationService} from './services/navigation.service';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
+import {AuthenticationService} from './services/authentication.service';
+import {ArticlesService} from './services/articles.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationBarComponent,
-    WelcomeComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,
@@ -30,8 +32,9 @@ import {FormsModule} from '@angular/forms';
     ModalModule.forRoot(),
     AngularSvgIconModule
   ],
-  providers: [NavigationService],
+  providers: [NavigationService, AuthenticationService, ArticlesService],
   bootstrap: [AppComponent],
-  exports: []
+  exports: [],
+  entryComponents: []
 })
 export class AppModule { }

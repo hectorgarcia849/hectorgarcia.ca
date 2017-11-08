@@ -1,7 +1,7 @@
 .article {
   background-color: rgba(100, 48, 239, 0.03);
-  margin: 20px 15%;
-  width: 70%;
+  margin: 20px 0;
+  width: 100%;
   padding: 20px 0;
 }
 .article-title-header {
@@ -48,4 +48,11 @@
 
 .article-content-p {
   text-align: justify;
+}
+
+@media only screen and (max-width: 600px) {
+  .article {
+    width: 100%;
+    margin: 20px 0;
+  }
 }

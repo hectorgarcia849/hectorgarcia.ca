@@ -1,43 +1,92 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {craftsmanshipArticles} from './articledata';
-import {TabsetComponent} from 'ngx-bootstrap';
-import {ActivatedRoute, Params, Router} from "@angular/router";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {ArticlesService} from '../../services/articles.service';
+import {Subscription} from 'rxjs/Subscription';
+import 'rxjs/add/operator/toPromise';
 
 @Component({
   selector: 'app-article-grid',
   templateUrl: './article-grid.component.html',
   styleUrls: ['./article-grid.component.css']
 })
-export class ArticleGridComponent implements OnInit, AfterViewInit {
+export class ArticleGridComponent implements OnInit, OnDestroy {
+  selectedTab = 0;
+  articles = {};
+  topicsSubscription: Subscription;
+  articlesSubscription: Subscription;
+  topics: string[] = [];
 
-  topics = ['software craftsmanship', 'angular framework', 'data science'];
-  selectedTopic;
-  softwareCraftsmanshipArticles;
-  @ViewChild('tabs') tabs: TabsetComponent;
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, private articlesService: ArticlesService) {
   }
+
   ngOnInit() {
-    this.softwareCraftsmanshipArticles = craftsmanshipArticles;
-    this.activatedRoute.queryParams.subscribe((params: Params) => {
-      if (params['topic']) {
-        this.setSelectedTopic(params['topic']);
-      } else {
-        this.setSelectedTopic(this.topics[0]);
-      }
+    this.topicsSubscription = this.articlesService.topics$
+      .subscribe((topics) => {
+        this.topics = topics;
+        this.activatedRoute.queryParams.subscribe((params: Params) => {
+          const selectedTopic = this.matchQueryTopicAndTab(params['topic']);
+          this.articlesService.getArticlesByTopicFromServerAndEmit(selectedTopic)
+            .then((allRetreivedArticles) => {
+              this.articles = allRetreivedArticles;
+          });
+        });
+    });
+    this.articlesSubscription = this.articlesService.articles$.subscribe((articles) => {
+      this.articles = articles;
     });
   }
-  ngAfterViewInit() {
+
+  ngOnDestroy() {
+    this.topicsSubscription.unsubscribe();
+    this.articlesSubscription.unsubscribe();
   }
-  setSelectedTopic(topic: string) {
-    this.selectedTopic = topic;
+
+  async updateQueryParams(index: number) {
+    const updatedTopic = this.topics[index];
     const queryParams: Params = Object.assign({}, this.activatedRoute.snapshot.queryParams);
-    queryParams['topic'] = topic;
-    this.router.navigate(['./articles'], {queryParams});
+    queryParams['topic'] = updatedTopic;
+    await this.router.navigate(['./articles'], {queryParams});
   }
-  isSelectedTopic(topic: string) {
-    return this.selectedTopic === topic;
+
+  matchQueryTopicAndTab(topic: string) {
+    let selectIndex;
+    if (topic) {
+      selectIndex = this.findTabIndexOfTopic(topic);
+    } else {
+      selectIndex = 0;
+      this.updateQueryParams(selectIndex);
+    }
+    this.setSelectedTab(selectIndex);
+    return this.topics[this.getSelectedTab()];
   }
+
+  setSelectedTab (i: number) {
+    this.selectedTab = i;
+  }
+
+  getSelectedTab(): number {
+    return this.selectedTab;
+  }
+
+  getSelectedTopic(): string {
+    return this.topics[this.selectedTab];
+  }
+
+  findTabIndexOfTopic(topic: string): number {
+    const defaultIndex = 0;
+    return topic ?
+      this.topics.findIndex((tab: string) => tab === topic) : defaultIndex;
+  }
+
+  populateArticlesBySelectedTopic() {
+    const selectedTopic = this.topics[this.selectedTab];
+    if (!this.articles[selectedTopic]) {
+      this.articlesService.getArticlesByTopicFromServerAndEmit(selectedTopic);
+    }
+  }
+
   capitalize(s: string) {
     return s.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
   }
 }
+

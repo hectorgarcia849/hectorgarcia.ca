@@ -4,20 +4,24 @@ import {BlogComponent} from './blog.component';
 import {CommonModule} from '@angular/common';
 import {BlogRoutingModule} from './blog.routing.module';
 import {MaterialsModule} from '../materials/materials.module';
-import {TabsModule} from 'ngx-bootstrap';
-import {ArticleComponent} from "./article/article.component";
+import {ArticleComponent} from './article/article.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {PostArticleComponent} from './post-article/post-article.component';
+
 
 @NgModule({
   declarations: [
     ArticleGridComponent,
     BlogComponent,
-    ArticleComponent
+    ArticleComponent,
+    PostArticleComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     BlogRoutingModule,
-    MaterialsModule,
-    TabsModule.forRoot()
+    MaterialsModule
   ],
 })
 

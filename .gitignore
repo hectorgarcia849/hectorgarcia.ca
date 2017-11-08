@@ -7,6 +7,10 @@
 
 # dependencies
 /node_modules
+/server/config/config.json
+.idea/
+
+
 
 # IDEs and editors
 /.idea

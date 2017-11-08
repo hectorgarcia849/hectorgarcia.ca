@@ -2,7 +2,7 @@
   background-blend-mode: screen;
   background-position: center;
   background-size: 100%;
-  background-color: white;
+  background-color: transparent;
   margin: 50px 0;
   z-index: 999;
   border-bottom: rgba(28, 14, 75, 0.25) 1px solid;
