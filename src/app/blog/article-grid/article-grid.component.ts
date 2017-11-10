@@ -11,61 +11,70 @@ import 'rxjs/add/operator/toPromise';
 })
 export class ArticleGridComponent implements OnInit, OnDestroy {
   selectedTab = 0;
-  articles = {};
+  articles = [];
   topicsSubscription: Subscription;
   articlesSubscription: Subscription;
+  queryParamsSubscription: Subscription;
   topics: string[] = [];
+  articlesBySelectedTopic = [];
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private articlesService: ArticlesService) {
   }
 
   ngOnInit() {
+
     this.topicsSubscription = this.articlesService.topics$
       .subscribe((topics) => {
         this.topics = topics;
-        this.activatedRoute.queryParams.subscribe((params: Params) => {
-          const selectedTopic = this.matchQueryTopicAndTab(params['topic']);
-          this.articlesService.getArticlesByTopicFromServerAndEmit(selectedTopic)
-            .then((allRetreivedArticles) => {
-              this.articles = allRetreivedArticles;
-          });
-        });
     });
-    this.articlesSubscription = this.articlesService.articles$.subscribe((articles) => {
-      this.articles = articles;
+
+    this.articlesSubscription = this.articlesService.articles$
+      .subscribe((articles) => {
+        this.articles = articles;
+        this.getArticlesBySelectedTopic();
+      });
+
+    this.queryParamsSubscription = this.activatedRoute.queryParams.subscribe(async (params: Params) => {
+      await this.matchQueryTopicAndTab(params['topic']);
     });
+
   }
 
   ngOnDestroy() {
     this.topicsSubscription.unsubscribe();
     this.articlesSubscription.unsubscribe();
-  }
-
-  async updateQueryParams(index: number) {
-    const updatedTopic = this.topics[index];
-    const queryParams: Params = Object.assign({}, this.activatedRoute.snapshot.queryParams);
-    queryParams['topic'] = updatedTopic;
-    await this.router.navigate(['./articles'], {queryParams});
+    this.queryParamsSubscription.unsubscribe();
   }
 
   matchQueryTopicAndTab(topic: string) {
     let selectIndex;
-    if (topic) {
+    if (topic && this.topics.length > 0) {
       selectIndex = this.findTabIndexOfTopic(topic);
     } else {
       selectIndex = 0;
-      this.updateQueryParams(selectIndex);
     }
     this.setSelectedTab(selectIndex);
-    return this.topics[this.getSelectedTab()];
+    return this.updateQueryParams(selectIndex);
+  }
+
+  updateQueryParams(index: number): Promise<any> {
+    if (index > -1) {
+      const updatedTopic = this.topics[index];
+      const queryParams: Params = Object.assign({}, this.activatedRoute.snapshot.queryParams);
+      queryParams['topic'] = updatedTopic;
+      return this.router.navigate(['./articles'], {queryParams});
+    } else {
+      // couldn't locate topic in query params.  Show an error message.
+      return this.router.navigate(['./articles']);
+    }
   }
 
   setSelectedTab (i: number) {
     this.selectedTab = i;
   }
 
-  getSelectedTab(): number {
-    return this.selectedTab;
+  emitSelectedTopic() {
+    this.articlesService.emitSelectedTopic(this.getSelectedTopic());
   }
 
   getSelectedTopic(): string {
@@ -78,15 +87,19 @@ export class ArticleGridComponent implements OnInit, OnDestroy {
       this.topics.findIndex((tab: string) => tab === topic) : defaultIndex;
   }
 
-  populateArticlesBySelectedTopic() {
-    const selectedTopic = this.topics[this.selectedTab];
-    if (!this.articles[selectedTopic]) {
-      this.articlesService.getArticlesByTopicFromServerAndEmit(selectedTopic);
+  isArticles(): boolean {
+    return this.articles ? true : false;
+  }
+
+  getArticlesBySelectedTopic() {
+    this.articlesBySelectedTopic = [];
+    if (this.articles.length > 0) {
+      const articlesByTopic = this.articles.find(
+        (value: { topic: string, articles: any[] }) => value.topic === this.getSelectedTopic());
+      if (articlesByTopic) {
+        this.articlesBySelectedTopic = articlesByTopic.articles;
+      }
     }
   }
 
-  capitalize(s: string) {
-    return s.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
-  }
 }
-

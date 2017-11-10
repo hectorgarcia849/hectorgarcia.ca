@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import * as moment from 'moment';
 import {Article} from '../../models/article.model';
 
@@ -7,12 +7,16 @@ import {Article} from '../../models/article.model';
   templateUrl: './article.component.html',
   styleUrls: ['./article.component.css']
 })
-export class ArticleComponent implements OnInit {
+export class ArticleComponent implements OnInit, AfterViewInit {
 
   @Input() article: Article;
   constructor() { }
 
   ngOnInit() {
+    console.log(this.article);
+  }
+
+  ngAfterViewInit() {
   }
 
   displayDate(date: string) {

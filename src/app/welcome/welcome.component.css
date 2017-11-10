@@ -71,8 +71,7 @@
 @media only screen and (max-width: 767px) {
   #container-welcome {
     height: 375px;
-    background: url(../../assets/toronto.jpg) 0 0 no-repeat;
-
+    background: url(../../assets/toronto-skyline.jpg) 0 0 no-repeat;
   }
   .welcome-login-a {
     left: 85%;

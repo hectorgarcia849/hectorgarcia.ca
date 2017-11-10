@@ -18,7 +18,7 @@ export class PostArticleComponent implements OnInit, OnDestroy {
 
   title = '';
   body = '';
-  topic: string;
+  topic = '';
   tags: string[] = [];
   separatorKeysCodes = [ENTER, COMMA];
   tabs: string[];
@@ -35,6 +35,7 @@ export class PostArticleComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.topicsSubscription = this.articlesService.topics$
       .subscribe((topics) => this.tabs = topics);
+
     this.errorSubscription = this.articlesService.error$
       .subscribe(
         (message) => {
@@ -48,7 +49,7 @@ export class PostArticleComponent implements OnInit, OnDestroy {
     this.errorSubscription.unsubscribe();
   }
 
-  onAddArticle(form: NgForm) {
+  onPostArticle(form: NgForm) {
     const newArticle = new Article(this.title, this.body, this.topic, this.title.substring(0, 140), this.tags);
     this.articlesService.postArticle(newArticle);
     this.tags = [];

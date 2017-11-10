@@ -32,11 +32,8 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.isLoggedInSubscription = this.authService.isLoggedIn$.subscribe((isLoggedIn) => {
       this.isLoggedIn = isLoggedIn;
     });
-    this.articlesService.getArticleTopicsFromServerAndEmit()
-      .then(() => {
-        this.topicsSubscription = this.articlesService.topics$
-          .subscribe((topics) => this.tabs = topics);
-    });
+    this.topicsSubscription = this.articlesService.topics$
+      .subscribe((topics) => this.tabs = topics);
   }
 
   ngOnDestroy() {

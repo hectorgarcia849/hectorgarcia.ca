@@ -41,12 +41,12 @@ articlesRouter.get('/by/topic', (req, res) => {
   console.log(topic);
   Article
     .find({topic})
-    .then((article) => {
-      if (!article) {
+    .then((articles) => {
+      if (!articles) {
         res.status(404).send('No articles found on servers.')
       } else {
-        console.log('article found', article);
-        res.send({article});
+        console.log('articles found', articles);
+        res.send(articles);
       }
     })
     .catch((err) => {
