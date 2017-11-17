@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {welcomeAnimation} from '../shared/animations';
 import {NavigationService} from '../services/navigation.service';
 import {Subscription} from 'rxjs/Subscription';
@@ -18,6 +18,8 @@ export class WelcomeComponent implements OnInit, OnDestroy {
   password = '';
   isLoggedInSubscription: Subscription;
   isLoggedIn: boolean;
+  connectionFailure: boolean;
+  incorrectCredentials: boolean;
   public modalRef: BsModalRef;
   constructor(private navService: NavigationService, private modalService: BsModalService, private authService: AuthenticationService) {
     this.routeWillChangeNotifications = this.navService.routeChange$.subscribe((route) => {
@@ -40,6 +42,8 @@ export class WelcomeComponent implements OnInit, OnDestroy {
   }
 
   openLogin(template: TemplateRef<any>) {
+    this.incorrectCredentials = false;
+    this.connectionFailure = false;
     this.modalRef = this.modalService.show(template);
   }
 
@@ -50,7 +54,16 @@ export class WelcomeComponent implements OnInit, OnDestroy {
           const token = JSON.stringify(res['token']);
           sessionStorage.setItem('token', token);
           this.authService.updateLoggedIn(true);
-        });
+        },
+        (err) => {
+          const incorrectCredentials = 404;
+          if (err.status === incorrectCredentials) {
+            this.incorrectCredentials = true;
+          } else {
+            this.connectionFailure = true;
+          }
+        }
+      );
   }
 
   onLogout() {

@@ -17,9 +17,17 @@
             <input matInput type="password" name="password" [(ngModel)]="password" placeholder="Password">
           </mat-form-field>
         </div>
+
         <button class="form-button">log in</button>
       </div>
     </form>
+
+    <div *ngIf="connectionFailure">
+      <p style="text-align:center; color: red;">Sorry unable to connect to the server at this time.  Please try again at a later time.</p>
+    </div>
+    <div *ngIf="incorrectCredentials">
+      <p style="text-align:center; color: red;">Sorry username/password were incorrect, please try again.</p>
+    </div>
 
     <form *ngIf="isLoggedIn" #f class="form-container" (ngSubmit)="onLogout()">
       <div>
@@ -27,6 +35,7 @@
         <button class="form-button">log out</button>
       </div>
     </form>
+
   </ng-template>
 
   <div id="container-titles">
