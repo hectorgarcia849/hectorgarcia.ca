@@ -1,7 +1,19 @@
 <div class="article">
+  <div *ngIf="isLoggedIn" class="article-button-options">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="onUpdate()">Update</button>
+      <button mat-menu-item (click)="onDelete()">Delete</button>
+    </mat-menu>
+  </div>
   <div class="article-title-header">
     <div class="article-postDate">
       Posted on: {{displayDate(article.postDate)}}
+    </div>
+    <div *ngIf="article.revisedDate" class="article-postDate">
+      Revised on: {{displayDate(article.revisedDate)}}
     </div>
     <h1 class="article-title">{{article.title}}</h1>
   </div>

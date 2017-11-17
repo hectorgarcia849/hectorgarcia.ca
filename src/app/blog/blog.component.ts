@@ -12,7 +12,6 @@ import {ArticlesService} from '../services/articles.service';
   animations: [titleAnimation]
 })
 export class BlogComponent implements OnInit, OnDestroy {
-  tabs = [];
   state = 'enter';
   routeWillChangeNotifications: Subscription;
   isLoggedInSubscription: Subscription;
@@ -32,14 +31,11 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.isLoggedInSubscription = this.authService.isLoggedIn$.subscribe((isLoggedIn) => {
       this.isLoggedIn = isLoggedIn;
     });
-    this.topicsSubscription = this.articlesService.topics$
-      .subscribe((topics) => this.tabs = topics);
   }
 
   ngOnDestroy() {
     this.routeWillChangeNotifications.unsubscribe();
     this.isLoggedInSubscription.unsubscribe();
-    this.topicsSubscription.unsubscribe();
   }
 }
 

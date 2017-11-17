@@ -18,15 +18,12 @@ const ArticleSchema= new mongoose.Schema({
   },
   topic: {
     type: String,
-    require: false,
+    require: true,
     maxlength: 15
   },
   postDate: {
     type: Number,
     required: true,
-  },
-  lastUpdated: {
-    type: Number
   },
   author: {
     type: String,
@@ -46,6 +43,9 @@ const ArticleSchema= new mongoose.Schema({
         type: String
       }
     ]
+  },
+  revisedDate: {
+    type: Number
   }
 });
 

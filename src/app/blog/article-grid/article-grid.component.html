@@ -1,14 +1,15 @@
 
 <div class="tabs-content">
   <mat-tab-group
-    [(selectedIndex)]="selectedTab"
-    (selectedIndexChange)="emitSelectedTopic(); updateQueryParams(selectedTab);">
+    [(selectedIndex)]="selectedTabIndex"
+    (selectedIndexChange)="emitSelectedTopic();"
+  >
     <mat-tab
       *ngFor="let topic of topics; let i=index;"
-      [label]="topic | titlecase"
+      [label]="topic.topic | titlecase"
     >
-      <div *ngFor="let article of articlesBySelectedTopic">
-        <div *ngIf="isArticles() && article.topic === topic">
+      <div class="tabs-articles" *ngFor="let article of articlesBySelectedTopic">
+        <div *ngIf="isArticles() && article.topic === topic.topic">
           <app-article [article]="article"></app-article>
         </div>
       </div>

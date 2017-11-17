@@ -1,4 +1,3 @@
-
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Article} from '../models/article.model';
@@ -12,18 +11,21 @@ const NOT_FOUND = -1;
 @Injectable()
 
 export class ArticlesService {
-  private articles: {topic: string, articles: any[]}[] = [];
+
+  private articles: Article[] = [];
   private articlesSubject = new ReplaySubject<any>(1);
-  public articles$ = this.articlesSubject.asObservable();
+  public  articles$ = this.articlesSubject.asObservable();
+  private articleToUpdate = new Subject<Article>();
+  public  articleToUpdate$ = this.articleToUpdate.asObservable();
   private topics = [];
-  private topicsSubject = new ReplaySubject<string[]>(1);
-  public topics$ = this.topicsSubject.asObservable();
+  private topicsSubject = new ReplaySubject<{topic: string, isLoaded: boolean}[]>(1);
+  public  topics$ = this.topicsSubject.asObservable();
   private selectedTopicSubject = new Subject<string>();
   private selectedTopic$ = this.selectedTopicSubject.asObservable();
   private selectedTopicSubscription: Subscription;
   private url = 'http://localhost:8100';
   private errorSubject = new Subject<string>();
-  public error$ = this.errorSubject.asObservable();
+  public  error$ = this.errorSubject.asObservable();
 
   constructor (private http: HttpClient) {
 
@@ -33,26 +35,19 @@ export class ArticlesService {
     this.getArticleTopicsFromServer()
       .then(
         (topics) => {
-          this.pushTopics(topics);
+          this.pushTopics(topics, false);
           this.emitTopics();
         });
+
     this.selectedTopicSubscription = this.selectedTopic$
       .subscribe(async (selectedTopic) => {
         await this.getArticlesByTopicFromServer(selectedTopic);
         this.emitArticles();
-
       });
-
-
-
-    // api
-    // clients merely subscribe and wait.  Don't have to worry about anything.
-    // topics$
-    // articles$
   }
 
-  getArticleTopicsFromServer() {
-    return this.http.get(`${this.url}/services/articles/topics`).toPromise()
+  async getArticleTopicsFromServer() {
+    return await this.http.get(`${this.url}/services/articles/topics`).toPromise()
       .then((topics: string[]) => {
         return topics;
       });
@@ -71,14 +66,25 @@ export class ArticlesService {
       .subscribe(
         (response: any) => {
 
-          const articleHasNewTopic = this.topics.indexOf(response.article.topic) === NOT_FOUND;
+          const topic = response.article.topic;
+          const articleHasNewTopic = this.topics.indexOf(topic) === NOT_FOUND;
 
           if (articleHasNewTopic) {
-            this.pushTopics([response.article.topic]);
+            this.pushTopics([topic], true);
             this.emitTopics();
-            this.articles.push({topic: response.article.topic, articles: []});
           }
-          this.articles.find((value: {topic: string, articles: any[]}) => value.topic === response.article.topic).articles.push(response.article);
+          const postedArticle = new Article(
+            response.article.title,
+            response.article.content,
+            response.article.topic,
+            response.article.excerpt,
+            response.article.tags,
+            response.article.authoer,
+            response.article.postDate,
+            response.article._id
+          );
+
+          this.articles.push(postedArticle);
           this.emitArticles();
         },
         (error) => {
@@ -88,37 +94,103 @@ export class ArticlesService {
   }
 
   async getArticlesByTopicFromServer(topic: string) {
-    //  Only gets articles by topic if an element with the a topic property matches param passed.
-
-    const articlesTopicIndex = this.articles.findIndex((value: {topic: string, articles: any[]}, index, array) => value.topic === topic);
-    if (articlesTopicIndex === NOT_FOUND) {
-      const articlesByTopic = await this.http.get(`${this.url}/services/articles/by/topic?topic=${topic}`)
+    //  Only gets articles by topic if an element with the topic property matches param passed.
+    const topicToLoad = this.topics.find((val, index, arr) => val.topic === topic);
+    if (!topicToLoad.isLoaded) {
+      await this.http.get(`${this.url}/services/articles/by/topic?topic=${topic}`)
         .toPromise()
         .then(
           (articles: any[]) => {
             if (articles.length > 0) {
-              return {topic, articles};
+              articles.forEach((article: Article) => {
+                this.articles.push(
+                  new Article(
+                    article.title,
+                    article.content,
+                    article.topic,
+                    article.excerpt,
+                    article.tags,
+                    article.author,
+                    article.postDate,
+                    article._id)
+                  );
+              });
             }
+            const topicIndex = this.topics.findIndex((val, i, a) => val.topic === topic);
+            this.topics[topicIndex].isLoaded = true;
           }
         );
-      this.articles.push(articlesByTopic);
     }
     return this.articles;
   }
 
-  private emitArticles() {
-    this.articlesSubject.next(this.articles);
+  deleteArticleByID(_id: string) {
+    const token = JSON.parse(sessionStorage.getItem('token'));
+    this.http.delete(`${this.url}/services/articles/by/article?_id=${_id}&token=${token}`).subscribe((response: any) => {
+      this.removeArticle(_id, (topic) => {
+        const topicHasNoMoreArticles = this.articleCountForTopic(topic) === 0;
+        if (topicHasNoMoreArticles) {
+          this.removeTopic(topic);
+          const nextTopic = 0;
+          this.emitTopics();
+          this.emitSelectedTopic(this.topics[nextTopic].topic);
+        } else {
+          this.emitArticles();
+        }
+      });
+    });
+  }
+
+  updateArticleOnServer(updatedArticle: Article) {
+    const token = JSON.parse(sessionStorage.getItem('token'));
+    this.http.patch(`${this.url}/services/articles/by/article?_id=${updatedArticle._id}&token=${token}`, updatedArticle)
+      .subscribe((response: any) => {
+        const topic = response.article.topic;
+        this.updateArticle(updatedArticle, (topicChanged, prevTopic) => {
+          const prevTopicHasNoMoreArticles = this.articleCountForTopic(prevTopic) === 0;
+          if (topicChanged && prevTopicHasNoMoreArticles) {
+            // const nextTopic = 0;
+            // this.emitSelectedTopic(this.topics[nextTopic]);
+            this.removeTopic(topic);
+            this.emitTopics();
+          } else {
+            this.emitArticles();
+          }
+        });
+      });
+  }
+
+  private removeArticle(_id: string, callback: (topic: string) => void) {
+    const articleIndex: number = this.getArticleIndex(_id);
+    const topic = this.articles[articleIndex].topic;
+    this.articles.splice(articleIndex, 1);
+    callback(topic);
+  }
+
+  private removeTopic(topic: string) {
+    this.topics.splice(this.topics.findIndex((val, i, a) => val.topic === topic), 1);
+  }
+
+  private updateArticle(updatedArticle: Article, callback: (topicChanged: boolean, prevTopic: string) => void) {
+    const articleIndex: number = this.getArticleIndex(updatedArticle._id);
+    const topic = this.articles[articleIndex].topic;
+    this.articles[articleIndex] = updatedArticle;
+    callback(topic !== updatedArticle.topic, topic);
   }
 
   private emitTopics() {
-    this.topicsSubject.next(this.topics);
+    this.topicsSubject.next(this.topics.slice());
   }
 
-  private pushTopics(topics: string[]) {
-    topics.forEach((topic) => this.topics.push(topic));
+  private pushTopics(topics: string[], isLoaded: boolean) {
+    topics.forEach((topic) => {
+      if (this.topics.indexOf(topic) === NOT_FOUND) {
+        return this.topics.push({topic, isLoaded});
+      }
+    });
   }
 
-  emitErrorMessage(status: number) {
+  private emitErrorMessage(status: number) {
     if (status === 400) {
       this.errorSubject.next('Unable to post article at this time.  Please make sure all fields are correctly filled.');
     } else if (status === 404) {
@@ -128,7 +200,30 @@ export class ArticlesService {
     }
   }
 
+  emitArticles() {
+    this.articlesSubject.next(this.articles.slice());
+  }
+
   emitSelectedTopic(topic: string) {
     this.selectedTopicSubject.next(topic);
   }
+
+  emitArticleToUpdate(article: Article) {
+    this.articleToUpdate.next(article);
+  }
+
+  getArticleIndex(_id: string): number {
+    return this.articles.findIndex((val, i, a) => val._id === _id);
+  }
+
+  articleCountForTopic(topic: string) {
+    let count = 0;
+    this.articles.forEach((article) => {
+      if (article.topic === topic) {
+        count++;
+      }
+    });
+    return count;
+  }
+
 }

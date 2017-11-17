@@ -1,4 +1,4 @@
-<form #f (ngSubmit)="onPostArticle(f)" class="form-container">
+<form #f (ngSubmit)="onSubmitArticle(f)" class="form-container">
   <div class="form-title">
     <h3>Post an Article</h3>
   </div>
@@ -41,7 +41,8 @@
       <textarea matInput mat-autosize matAutosizeMinRows="20" matAutosizeMaxRows="20" placeholder="Body" name="body" type="text" [(ngModel)]="body" required></textarea>
     </mat-form-field>
   </div>
-  <button style="width: 20%; margin: 0 40%;">Post</button>
+  <button style="width: 20%; margin: 0 40%;">{{ mode | titlecase}}</button>
+
 </form>
 
 <ng-template #modal>

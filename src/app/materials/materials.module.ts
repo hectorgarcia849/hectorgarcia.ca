@@ -30,6 +30,8 @@ import {
   ],
   declarations: [],
   exports: [
+    MatButtonModule,
+    MatMenuModule,
     MatIconModule,
     MatTabsModule,
     MatGridListModule,

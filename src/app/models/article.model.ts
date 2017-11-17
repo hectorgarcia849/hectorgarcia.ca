@@ -5,7 +5,8 @@ export class Article {
               public excerpt: string,
               public tags: string[],
               public author?: string,
-              public postDate?: string
-  ) {
+              public postDate?: string,
+              public _id?: string,
+              public revisedDate?: string) {
   }
 }

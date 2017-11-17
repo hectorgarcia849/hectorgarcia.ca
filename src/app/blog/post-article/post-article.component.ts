@@ -21,39 +21,64 @@ export class PostArticleComponent implements OnInit, OnDestroy {
   topic = '';
   tags: string[] = [];
   separatorKeysCodes = [ENTER, COMMA];
-  tabs: string[];
-  topicsSubscription: Subscription;
-  public modalRef: BsModalRef;
   errorSubscription: Subscription;
+  articleToUpdateSubscription: Subscription;
+  updatingArticle: Article;
   errorMessage: string;
-  myControl: FormControl = new FormControl();
+  mode = 'post';
+  public modalRef: BsModalRef;
   @ViewChild('modal') modal: TemplateRef<any>;
 
   constructor(private articlesService: ArticlesService, private modalService: BsModalService) {
   }
 
   ngOnInit() {
-    this.topicsSubscription = this.articlesService.topics$
-      .subscribe((topics) => this.tabs = topics);
-
     this.errorSubscription = this.articlesService.error$
       .subscribe(
         (message) => {
           this.errorMessage = message;
           this.modalRef = this.modalService.show(this.modal);
         });
+
+    this.articleToUpdateSubscription = this.articlesService.articleToUpdate$
+      .subscribe((article: Article) => {
+        this.mode = 'update';
+        this.updatingArticle = article;
+        this.title = article.title;
+        this.body = article.content;
+        this.topic = article.topic;
+        this.tags = article.tags;
+      });
   }
 
   ngOnDestroy() {
-    this.topicsSubscription.unsubscribe();
     this.errorSubscription.unsubscribe();
+    this.articleToUpdateSubscription.unsubscribe();
   }
 
-  onPostArticle(form: NgForm) {
-    const newArticle = new Article(this.title, this.body, this.topic, this.title.substring(0, 140), this.tags);
-    this.articlesService.postArticle(newArticle);
+  onSubmitArticle(form: NgForm) {
+    if (this.mode === 'post') {
+      this.onPostArticle();
+    } else if (this.mode === 'update') {
+      this.onUpdateArticle();
+    }
     this.tags = [];
     form.reset();
+  }
+
+  onPostArticle() {
+    const newArticle = new Article(this.title, this.body, this.topic, this.title.substring(0, 140), this.tags);
+    this.articlesService.postArticle(newArticle);
+  }
+
+  onUpdateArticle() {
+    this.updatingArticle.title = this.title;
+    this.updatingArticle.topic = this.topic;
+    this.updatingArticle.content = this.body;
+    this.updatingArticle.tags = this.tags;
+    this.articlesService.updateArticleOnServer(this.updatingArticle);
+    this.mode = 'post';
+
   }
 
   add(event: MatChipInputEvent): void {
