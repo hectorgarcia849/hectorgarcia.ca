@@ -11,9 +11,9 @@ const {mongoose} = require('./db/mongoose'); //connects to db
 const {usersRouter} = require('./routes/users')
 const {articlesRouter} = require('./routes/articles');
 
+app.use(cors());
 app.use(compression());
 app.use(bodyParser.json());
-app.use(cors());
 
 app.use(express.static(__dirname + '/../dist'));
 app.use('/services/users', usersRouter);
