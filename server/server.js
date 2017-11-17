@@ -16,8 +16,8 @@ app.use(compression());
 app.use(bodyParser.json());
 
 app.use(express.static(__dirname + '/../dist'));
-app.use('/services/users', usersRouter);
-app.use('/services/articles', articlesRouter);
+app.use('/services/users', cors(), usersRouter);
+app.use('/services/articles', cors(), articlesRouter);
 
 app.listen(process.env.PORT || 8100);
 
