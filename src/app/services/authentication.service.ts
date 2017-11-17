@@ -6,7 +6,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 @Injectable()
 
 export class AuthenticationService {
-  private url = 'http://www.hectorgarcia.ca';
+  private url = 'https://www.hectorgarcia.ca';
   private loggedInSubject = new BehaviorSubject<boolean>(false);
   public isLoggedIn$ = this.loggedInSubject.asObservable();
   constructor(private http: HttpClient) {
