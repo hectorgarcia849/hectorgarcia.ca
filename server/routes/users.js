@@ -5,14 +5,14 @@ const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 const {User} = require('./../models/user.model');
 
-usersRouter.post('/', (req, res) => {
-  const body = _.pick(req.body, ['email', 'password']); //middleware in the User model encrypts the password
-  const user = new User(body);
-  const token = user.generateAuthToken();
-  user.save()
-    .then((user) => {res.header('x-auth', user.generateAuthToken()).send({user, token})})
-    .catch((e) => res.status(400).send(e));
-});
+// usersRouter.post('/', (req, res) => {
+//   const body = _.pick(req.body, ['email', 'password']); //middleware in the User model encrypts the password
+//   const user = new User(body);
+//   const token = user.generateAuthToken();
+//   user.save()
+//     .then((user) => {res.header('x-auth', user.generateAuthToken()).send({user, token})})
+//     .catch((e) => res.status(400).send(e));
+// });
 
 usersRouter.get('me', authenticate, (req, res) => {
   const decoded = jwt.decode(req.query.token);
