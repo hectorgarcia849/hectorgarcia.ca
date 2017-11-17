@@ -23,7 +23,7 @@ export class ArticlesService {
   private selectedTopicSubject = new Subject<string>();
   private selectedTopic$ = this.selectedTopicSubject.asObservable();
   private selectedTopicSubscription: Subscription;
-  private url = 'http://localhost:8100';
+  private url = 'http://www.hectorgarcia.ca';
   private errorSubject = new Subject<string>();
   public  error$ = this.errorSubject.asObservable();
 
