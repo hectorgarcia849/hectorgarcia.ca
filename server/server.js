@@ -12,7 +12,6 @@ const {usersRouter} = require('./routes/users')
 const {articlesRouter} = require('./routes/articles');
 
 app.use(cors());
-// {origin: ['http://hectorgarcia.ca', 'http://www.hectorgarcia.ca', 'http://hectorgarcia.herokuapp.com, http://localhost:4200']}
 app.use(compression());
 app.use(bodyParser.json());
 
