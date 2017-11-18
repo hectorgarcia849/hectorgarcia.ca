@@ -23,7 +23,8 @@ export class ArticlesService {
   private selectedTopicSubject = new Subject<string>();
   private selectedTopic$ = this.selectedTopicSubject.asObservable();
   private selectedTopicSubscription: Subscription;
-  private url = 'https://hectorgarcia.herokuapp.com';
+  // private url = 'https://hectorgarcia.herokuapp.com';
+  private url = 'http://localhost:8100'
   private errorSubject = new Subject<string>();
   public  error$ = this.errorSubject.asObservable();
 
@@ -146,7 +147,17 @@ export class ArticlesService {
     this.http.patch(`${this.url}/services/articles/by/article?_id=${updatedArticle._id}&token=${token}`, updatedArticle)
       .subscribe((response: any) => {
         const topic = response.article.topic;
-        this.updateArticle(updatedArticle, (topicChanged, prevTopic) => {
+        const article = new Article(
+          response.article.title,
+          response.article.content,
+          response.article.topic,
+          response.article.excerpt,
+          response.article.tags,
+          response.article.author,
+          response.article.postDate,
+          response.article._id
+          );
+        this.updateArticle(article, (topicChanged, prevTopic) => {
           const prevTopicHasNoMoreArticles = this.articleCountForTopic(prevTopic) === 0;
           if (topicChanged && prevTopicHasNoMoreArticles) {
             // const nextTopic = 0;

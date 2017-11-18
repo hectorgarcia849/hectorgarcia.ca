@@ -3,13 +3,12 @@ const articlesRouter = express.Router();
 const {authenticate} = require('../middleware/authenticate');
 const {Article} = require('../models/article.model');
 const _ = require('lodash');
+const nl2br = require('nl2br');
 
 articlesRouter.post('/', authenticate, (req, res) => {
-  console.log(req.body);
-
   const article = new Article({
     title: req.body.title,
-    content: req.body.content,
+    content: nl2br(req.body.content),
     topic: req.body.topic.toLowerCase(),
     postDate: new Date().getTime(),
     author: 'Hector Garcia',
@@ -17,12 +16,19 @@ articlesRouter.post('/', authenticate, (req, res) => {
     tags: req.body.tags
   });
 
+  console.log(nl2br(req.body.content));
+
   article
     .save()
     .then((article) => {
       res.send({article})
     })
-    .catch((err) => res.status(400).send(err));
+    .catch(
+      (err) => {
+        console.log(err);
+        res.status(400).send(err);
+      }
+    );
 });
 
 articlesRouter.get('/topics', (req, res) => {
@@ -57,7 +63,8 @@ articlesRouter.get('/by/topic', (req, res) => {
 
 articlesRouter.patch('/by/article', authenticate, (req, res) => {
   const article_id = req.query['_id'];
-  const body = _.pick(req.body, ['topic', 'title', 'tags', 'body']);
+  const body = _.pick(req.body, ['topic', 'title', 'tags', 'content']);
+  body.content = nl2br(body.content);
   const revisedDate = new Date().getTime();
   Article
     .findByIdAndUpdate(article_id, {$set: body, revisedDate}, {new: true})

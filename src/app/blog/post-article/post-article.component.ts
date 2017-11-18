@@ -45,7 +45,7 @@ export class PostArticleComponent implements OnInit, OnDestroy {
         this.mode = 'update';
         this.updatingArticle = article;
         this.title = article.title;
-        this.body = article.content;
+        this.body = article.content.replace(/<br\s*[\/]?>/g, "\n");
         this.topic = article.topic;
         this.tags = article.tags;
       });
@@ -74,7 +74,8 @@ export class PostArticleComponent implements OnInit, OnDestroy {
   onUpdateArticle() {
     this.updatingArticle.title = this.title;
     this.updatingArticle.topic = this.topic;
-    this.updatingArticle.content = this.body;
+    this.updatingArticle.content = this.body.replace(/\n/g, '<br />');
+
     this.updatingArticle.tags = this.tags;
     this.articlesService.updateArticleOnServer(this.updatingArticle);
     this.mode = 'post';
