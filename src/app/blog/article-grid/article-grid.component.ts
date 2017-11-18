@@ -43,6 +43,7 @@ export class ArticleGridComponent implements OnInit, OnDestroy {
     this.articlesSubscription = this.articlesService.articles$.subscribe(
       (articles: Article[]) => {
         this.articles = articles;
+        this.articles.sort((a: Article, b: Article) => parseInt(a.postDate, 10) <= parseInt(b.postDate, 10) ? 1 : -1);
         this.getArticlesBySelectedTopic();
       });
   }
