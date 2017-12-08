@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {ArticlesService} from '../../services/articles.service';
 import {Subscription} from 'rxjs/Subscription';
@@ -10,7 +10,6 @@ import {Article} from '../../models/article.model';
   selector: 'app-article-grid',
   templateUrl: './article-grid.component.html',
   styleUrls: ['./article-grid.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class ArticleGridComponent implements OnInit, OnDestroy {
   selectedTabIndex;

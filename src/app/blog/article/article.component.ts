@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import * as moment from 'moment';
 import {Article} from '../../models/article.model';
 import {AuthenticationService} from '../../services/authentication.service';
@@ -8,7 +8,8 @@ import {ArticlesService} from '../../services/articles.service';
 @Component({
   selector: 'app-article',
   templateUrl: './article.component.html',
-  styleUrls: ['./article.component.css']
+  styleUrls: ['./article.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ArticleComponent implements OnInit, OnDestroy {
   isLoggedIn = false;
