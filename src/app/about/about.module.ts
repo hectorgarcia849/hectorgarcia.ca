@@ -8,6 +8,7 @@ import {FactsComponent} from './facts/facts.component';
 import {WhymeComponent} from './whyme/whyme.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {SharedModule} from '../shared/shared.module';
+import { HighlightsComponent } from './highlights/highlights.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import {SharedModule} from '../shared/shared.module';
     MyselfComponent,
     SkillsComponent,
     FactsComponent,
-    WhymeComponent
+    WhymeComponent,
+    HighlightsComponent
   ],
   imports: [
     CommonModule,

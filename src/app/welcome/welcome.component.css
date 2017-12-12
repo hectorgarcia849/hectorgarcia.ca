@@ -1,5 +1,5 @@
 .title-welcome {
-  color: #a0cceb;
+  color: #fff;
 }
 
 .welcome-login-a {
@@ -17,20 +17,20 @@
   min-width: 320px;
   position: absolute;
   top: 0;
-  background: url(../../assets/toronto-skyline.jpg) 0 0 no-repeat fixed;
+  background: url(https://image.ibb.co/dedQ7w/map.png) 0 0 no-repeat fixed;
   background-size: 100% 1000px;
 }
 
 #container-titles {
   margin-top: 75px;
-  background-color: rgba(100, 48, 239, 0.25);
+  background-color: rgba(236, 59, 239, 0.5);
   padding: 15px;
   width: 100%;
 }
 
 #container-name {
   margin-top: 75px;
-  background-color: rgba(100, 48, 239, 0.25);
+  background-color: rgba(236, 59, 239, 0.30);
   padding: 15px;
   width: 100%;
 }
@@ -71,7 +71,7 @@
 @media only screen and (max-width: 767px) {
   #container-welcome {
     height: 375px;
-    background: url(../../assets/toronto-skyline.jpg) 0 0 no-repeat;
+    background: url(https://image.ibb.co/dedQ7w/map.png) 0 0 no-repeat;
   }
   .welcome-login-a {
     left: 85%;
