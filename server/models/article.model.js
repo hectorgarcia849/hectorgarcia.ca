@@ -17,7 +17,7 @@ const ArticleSchema= new mongoose.Schema({
   topic: {
     type: String,
     require: true,
-    maxlength: 15
+    maxlength: 30
   },
   postDate: {
     type: Number,
