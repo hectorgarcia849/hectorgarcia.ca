@@ -202,12 +202,13 @@ export class ArticlesService {
   }
 
   private emitErrorMessage(status: number) {
+    console.log(status)
     if (status === 400) {
       this.errorSubject.next('Unable to post article at this time.  Please make sure all fields are correctly filled.');
     } else if (status === 404) {
       this.errorSubject.next('Unable to connect to server.  Check your internet connection and try again.');
     } else {
-      this.errorSubject.next(`Status: ${status}.  An unidentified error has occurred.  Please contact the administrator.`);
+      this.errorSubject.next(`Status: ${status}  An unidentified error has occurred.  Please contact the administrator.`);
     }
   }
 
