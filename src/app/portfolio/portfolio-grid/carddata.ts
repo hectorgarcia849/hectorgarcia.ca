@@ -104,7 +104,7 @@ const titanic = new Card(
 const hectorgarcia = new Card(
   'HectorGarcia.ca',
   'Single Page Application',
-  `https://image.ibb.co/fpvECG/hg_welcome_pg.png" alt="hg_welcome_pg`,
+  `https://image.ibb.co/fpvECG/hg_welcome_pg.png`,
   'Single Page Application ',
   ['Angular 4', 'Node.js', 'Express', 'TypeScript ES6', 'JavaScript ES6', 'rxjs', 'REST API'],
   'https://github.com/hectorgarcia849/hectorgarcia.ca',
