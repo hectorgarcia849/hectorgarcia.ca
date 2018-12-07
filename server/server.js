@@ -8,7 +8,7 @@ const compression = require('compression');
 const cors = require('cors');
 const {mongoose} = require('./db/mongoose'); //connects to db
 
-const {usersRouter} = require('./routes/users')
+const {usersRouter} = require('./routes/users');
 const {articlesRouter} = require('./routes/articles');
 
 app.use(cors({origin: ['http://hectorgarcia.ca', 'http://www.hectorgarcia.ca', 'http://hectorgarcia.herokuapp.com']}));

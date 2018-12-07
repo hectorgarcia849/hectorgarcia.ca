@@ -28,5 +28,4 @@ export const routes: {path: string, state: string}[] = appRoutes.slice(0, exclud
   declarations: []
 })
 
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}
