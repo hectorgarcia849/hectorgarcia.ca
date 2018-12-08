@@ -4,8 +4,8 @@ import {Article} from '../../models/article.model';
 import {FormControl, NgForm} from '@angular/forms';
 import {ArticlesService} from '../../services/articles.service';
 import {ENTER} from '@angular/cdk/keycodes';
-import {Subscription} from 'rxjs/Subscription';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {Subscription} from 'rxjs/index';
 
 const COMMA = 188;
 
@@ -45,7 +45,7 @@ export class PostArticleComponent implements OnInit, OnDestroy {
         this.mode = 'update';
         this.updatingArticle = article;
         this.title = article.title;
-        this.body = article.content.replace(/<br\s*[\/]?>/g, "\n");
+        this.body = article.content.replace(/<br\s*[\/]?>/g, '\n');
         this.topic = article.topic;
         this.tags = article.tags;
       });

@@ -15,12 +15,14 @@ import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {AuthenticationService} from './services/authentication.service';
 import {ArticlesService} from './services/articles.service';
+import { FeaturedArticlesComponent } from './featured-articles/featured-articles.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationBarComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    FeaturedArticlesComponent
   ],
   imports: [
     BrowserModule,

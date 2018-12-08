@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {ArticlesService} from '../../services/articles.service';
-import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/concat';
 import {Article} from '../../models/article.model';
+import {Subscription} from 'rxjs/index';
 
 @Component({
   selector: 'app-article-grid',

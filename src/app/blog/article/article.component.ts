@@ -2,8 +2,8 @@ import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/c
 import * as moment from 'moment';
 import {Article} from '../../models/article.model';
 import {AuthenticationService} from '../../services/authentication.service';
-import {Subscription} from 'rxjs/Subscription';
 import {ArticlesService} from '../../services/articles.service';
+import {Subscription} from 'rxjs/index';
 
 @Component({
   selector: 'app-article',

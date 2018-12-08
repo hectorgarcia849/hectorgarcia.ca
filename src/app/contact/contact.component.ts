@@ -1,7 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NavigationService} from '../services/navigation.service';
-import {Subscription} from 'rxjs/Subscription';
 import {titleAnimation} from '../shared/animations';
+import {Subscription} from 'rxjs/index';
+
 
 
 @Component({

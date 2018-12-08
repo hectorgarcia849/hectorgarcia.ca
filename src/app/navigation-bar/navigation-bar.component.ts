@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { navBarAnimation} from '../shared/animations';
 import {NavigationStart, Router} from '@angular/router';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/timer';
 import {NavigationService} from '../services/navigation.service';
-import {Subscription} from 'rxjs/Subscription';
 import {routes} from '../app-routing.module';
-import 'rxjs/add/operator/filter';
+import {Subscription} from 'rxjs/index';
+
+import {timer} from 'rxjs';
+// import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -49,8 +49,8 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
     routerLink directive. */
     const path = selectedRoute.path.split('/', 1)[0];
     this.navService.broadcastRouteChange(path);
-    const timer = Observable.timer(500);
-    timer.subscribe(() => {
+    const timerObs = timer(500);
+    timerObs.subscribe(() => {
       this.setAnimationState(selectedRoute.state);
       this.router.navigate([`/${selectedRoute.path}`]);
     });

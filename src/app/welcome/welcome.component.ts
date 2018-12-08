@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {welcomeAnimation} from '../shared/animations';
 import {NavigationService} from '../services/navigation.service';
-import {Subscription} from 'rxjs/Subscription';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {AuthenticationService} from '../services/authentication.service';
+import {Subscription} from 'rxjs/index';
 
 @Component({
   selector: 'app-welcome',
