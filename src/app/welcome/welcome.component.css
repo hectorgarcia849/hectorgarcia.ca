@@ -17,7 +17,7 @@
   min-width: 320px;
   position: absolute;
   top: 0;
-  background: url(https://image.ibb.co/dedQ7w/map.png) 0 0 no-repeat fixed;
+  /*background: url(https://image.ibb.co/dedQ7w/map.png) 0 0 no-repeat fixed;*/
   background-size: 100% 1000px;
 }
 
@@ -71,7 +71,7 @@
 @media only screen and (max-width: 767px) {
   #container-welcome {
     height: 375px;
-    background: url(https://image.ibb.co/dedQ7w/map.png) 0 0 no-repeat;
+    /*background: url(https://image.ibb.co/dedQ7w/map.png) 0 0 no-repeat;*/
   }
   .welcome-login-a {
     left: 85%;
