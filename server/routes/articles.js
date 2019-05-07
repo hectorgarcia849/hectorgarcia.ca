@@ -4,6 +4,10 @@ const {authenticate} = require('../middleware/authenticate');
 const {Article} = require('../models/article.model');
 const _ = require('lodash');
 const nl2br = require('nl2br');
+const bodyParser = require('body-parser');
+
+
+articlesRouter.use(bodyParser.json());
 
 articlesRouter.post('/', authenticate, (req, res) => {
   const article = new Article({

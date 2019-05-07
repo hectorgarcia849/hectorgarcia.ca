@@ -24,6 +24,9 @@ import { HighlightsComponent } from './highlights/highlights.component';
     AboutRoutingModule,
     AngularSvgIconModule,
     SharedModule
+  ],
+  exports: [
+    AboutComponent
   ]
 })
 

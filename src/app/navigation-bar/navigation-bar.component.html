@@ -1,7 +1,62 @@
 <nav [@navBarAnimation]="state" id="navigationBar">
-  <section class="buttons">
-    <div class="container">
-      <a *ngFor="let route of routes.slice(1)" class="nav-btn hover-btn hover-btn-2" (click)="onRouteSelected(route)" [ngClass]="{'selected': route.path === selectedPath}">{{ route.path }}</a>
+
+      <h1 routerLink="./" class="nav-title">hectorgarcia.ca</h1>
+      <div class="nav-bar-buttons-container">
+        <div class="nav-bar-button-container">
+          <button mat-button (click)="scrollToElement('about')">about</button>
+        </div>
+
+        <div class="nav-bar-button-container">
+          <button mat-button (click)="scrollToElement('portfolio')">portfolio</button>
+        </div>
+
+        <div class="nav-bar-button-container">
+          <button mat-button (click)="scrollToElement('contact')">contact</button>
+        </div>
+
+        <div *ngIf="!isLoggedIn" class="nav-bar-button-container">
+          <button mat-button (click)="openLogin(template)">log in</button>
+        </div>
+
+        <div *ngIf="isLoggedIn" class="nav-bar-button-container">
+          <button mat-button (click)="openLogin(template)">log out</button>
+        </div>
+
+
+      </div>
+
+  <ng-template #template>
+    <h3 class="form-title">hectorgarcia.ca | Admin</h3>
+    <form *ngIf="!isLoggedIn" #f class="form-container" (ngSubmit)="onLogin()">
+      <div>
+        <div>
+          <mat-form-field class="form-field">
+            <input matInput type="email" name="email" [(ngModel)]="email" placeholder="Username">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="form-field">
+            <input matInput type="password" name="password" [(ngModel)]="password" placeholder="Password">
+          </mat-form-field>
+        </div>
+
+        <button class="form-button">log in</button>
+      </div>
+    </form>
+
+    <div *ngIf="connectionFailure">
+      <p style="text-align:center; color: red;">Sorry unable to connect to the server at this time.  Please try again at a later time.</p>
     </div>
-  </section>
+    <div *ngIf="incorrectCredentials">
+      <p style="text-align:center; color: red;">Sorry username/password were incorrect, please try again.</p>
+    </div>
+
+    <form *ngIf="isLoggedIn" #f class="form-container" (ngSubmit)="onLogout()">
+      <div>
+        <h4 class="form-title">Logged In!</h4>
+        <button class="form-button">log out</button>
+      </div>
+    </form>
+
+  </ng-template>
 </nav>

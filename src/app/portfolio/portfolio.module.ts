@@ -14,7 +14,8 @@ import {PortfolioRoutingModule} from './portfolio.routing.module';
     CommonModule,
     PortfolioRoutingModule,
     MaterialsModule
-  ]
+  ],
+  exports: [PortfolioComponent]
 })
 
 export class PortfolioModule {}

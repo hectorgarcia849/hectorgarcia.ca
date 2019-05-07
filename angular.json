@@ -25,7 +25,9 @@
               "src/styles/custom-themes.scss",
               "src/styles/hoverbuttons.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/identicon.js/identicon.js"
+            ]
           },
           "configurations": {
             "production": {

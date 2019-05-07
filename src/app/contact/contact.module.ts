@@ -14,7 +14,8 @@ import {TooltipModule} from 'ngx-bootstrap';
     ContactRoutingModule,
     AngularSvgIconModule,
     TooltipModule.forRoot()
-  ]
+  ],
+  exports: [ContactComponent]
 })
 
 export class ContactModule {}

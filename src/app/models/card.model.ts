@@ -1,5 +1,3 @@
-//title, subtitle, image,description
-
 export class Card {
   constructor(public title: string,
               public subtitle: string,

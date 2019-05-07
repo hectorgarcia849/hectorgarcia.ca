@@ -8,22 +8,36 @@
   top: 5%;
 }
 
+#container-featured-articles {
+  float: left;
+  background-color: red;
+  width: 94%;
+  max-width: 1920px;
+  min-width: 320px;
+  height: 400px;
+  margin: 350px 3%;
+}
+
 #container-welcome {
   text-align: center;
-  background-color: #262626;
   height: 425px;
   width: 100%;
   max-width: 1920px;
   min-width: 320px;
-  position: absolute;
-  top: 0;
-  /*background: url(https://image.ibb.co/dedQ7w/map.png) 0 0 no-repeat fixed;*/
-  background-size: 100% 1000px;
+  margin: 0;
+  /*position: absolute;*/
+  /*top: 0;*/
+  background: url("../../assets/welcome/art-flowers-generative-art.jpg") 0 0;
+  /*background-color: #262626;*/
+  background-size: cover;
+  /*background-size: 200px 200px;*/
+  /*background-blend-mode: overlay;*/
+  float: left;
 }
 
 #container-titles {
   margin-top: 75px;
-  background-color: rgba(236, 59, 239, 0.5);
+  background-color: rgba(236, 59, 239, 0.4);
   padding: 15px;
   width: 100%;
 }
@@ -48,33 +62,22 @@
   width: 100%;
 }
 
-.form-title {
-  width: 100%;
-  text-align: center;
-  color: rgba(100, 48, 239, 0.50);
-}
-
-.form-container {
-  margin: 20px 20%;
-  width: 60%;
-}
-
-.form-field {
-  width: 100%;
-}
-
-.form-button {
-  margin:0 35%;
-  width: 30%;
-}
-
 @media only screen and (max-width: 767px) {
   #container-welcome {
     height: 375px;
-    /*background: url(https://image.ibb.co/dedQ7w/map.png) 0 0 no-repeat;*/
   }
   .welcome-login-a {
     left: 85%;
+  }
+
+  #container-featured-articles {
+    float: left;
+    background-color: red;
+    width: 94%;
+    max-width: 767px;
+    min-width: 320px;
+    height: 100%;
+    margin: 400px 3%;
   }
 }
 

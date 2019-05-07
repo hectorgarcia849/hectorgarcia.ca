@@ -1,0 +1,19 @@
+.card {
+  min-width: 300px;
+  width: 23%;
+  height: 100%;
+  margin: 10px 1%;
+  text-align: center;
+  padding: 0 0;
+  float: left;
+}
+
+@media only screen and (max-width: 767px) {
+
+  .card {
+    max-width: 767px;
+    width: 86%;
+    margin: 10px 7%;
+  }
+
+}

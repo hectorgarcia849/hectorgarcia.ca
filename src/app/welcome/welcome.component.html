@@ -1,49 +1,10 @@
-
-<div [@welcomeAnimation]="state" id="container-welcome">
-  <a *ngIf="!isLoggedIn" class="welcome-login-a" (click)="openLogin(template)">log in</a>
-  <a *ngIf="isLoggedIn" class="welcome-login-a" (click)="openLogin(template)">log out</a>
-
-  <ng-template #template>
-    <h3 class="form-title">hectorgarcia.ca | Admin</h3>
-    <form *ngIf="!isLoggedIn" #f class="form-container" (ngSubmit)="onLogin()">
-      <div>
-        <div>
-          <mat-form-field class="form-field">
-            <input matInput type="email" name="email" [(ngModel)]="email" placeholder="Username">
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field class="form-field">
-            <input matInput type="password" name="password" [(ngModel)]="password" placeholder="Password">
-          </mat-form-field>
-        </div>
-
-        <button class="form-button">log in</button>
-      </div>
-    </form>
-
-    <div *ngIf="connectionFailure">
-      <p style="text-align:center; color: red;">Sorry unable to connect to the server at this time.  Please try again at a later time.</p>
-    </div>
-    <div *ngIf="incorrectCredentials">
-      <p style="text-align:center; color: red;">Sorry username/password were incorrect, please try again.</p>
-    </div>
-
-    <form *ngIf="isLoggedIn" #f class="form-container" (ngSubmit)="onLogout()">
-      <div>
-        <h4 class="form-title">Logged In!</h4>
-        <button class="form-button">log out</button>
-      </div>
-    </form>
-
-  </ng-template>
+<div id="container-welcome">
 
   <div id="container-titles">
-    <h3 class="about-title-page title-welcome" id="title-welcome">Strategic Innovation</h3>
-    <h6 class="about-title-page title-welcome" id="subtitle-welcome">Data Science, Software Development & Project Management</h6>
+    <h2 class="about-title-page title-welcome" id="title-welcome">Data Science & Web Development</h2>
+    <h6 class="about-title-page title-welcome" id="subtitle-welcome">Python, JavaScript, R, SQL & NoSQL</h6>
   </div>
   <div id="container-name">
-    <h3 class="about-title-page title-welcome" id="name-welcome">HectorGarcia.ca</h3>
+    <h3 class="about-title-page title-welcome" id="name-welcome">#Enter Value Proposition Here#</h3>
   </div>
 </div>
-<router-outlet></router-outlet>

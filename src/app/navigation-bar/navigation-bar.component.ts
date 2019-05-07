@@ -1,68 +1,80 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import { navBarAnimation} from '../shared/animations';
+import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
+import {navBarAnimation} from '../shared/animations';
 import {NavigationStart, Router} from '@angular/router';
 import {NavigationService} from '../services/navigation.service';
 import {routes} from '../app-routing.module';
-import {Subscription} from 'rxjs/index';
+import {Subscription} from 'rxjs/Rx';
 
 import {timer} from 'rxjs';
+import {AuthenticationService} from '../services/authentication.service';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 // import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-navigation-bar',
   templateUrl: './navigation-bar.component.html',
-  styleUrls: ['./navigation-bar.component.css'],
-  animations: [
-      navBarAnimation
-  ]
+  styleUrls: ['./navigation-bar.component.css']
 })
-export class NavigationBarComponent implements OnInit, OnDestroy {
+export class NavigationBarComponent implements OnInit {
 
   state;
-  routerNavEventSubscription: Subscription;
-  routes = routes;
-  selectedPath;
-  constructor(private router: Router, private navService: NavigationService) {
+  isLoggedInSubscription: Subscription;
+  isLoggedIn: boolean;
+  email = '';
+  password = '';
+  connectionFailure: boolean;
+  incorrectCredentials: boolean;
+  public modalRef: BsModalRef;
+
+
+  constructor(private router: Router,
+              private modalService: BsModalService,
+              private authService: AuthenticationService) {
   }
 
   ngOnInit() {
-    this.routerNavEventSubscription = this.router
-      .events
-      .filter((event) => event instanceof NavigationStart)
+
+    this.isLoggedInSubscription = this.authService
+      .isLoggedIn$
       .subscribe(
-        (nav: any) => {
-          const newPath = nav.url.substr(1).split('/', 1)[0].split('?', 1)[0];
-          this.selectedPath = newPath;
-          this.navService.broadcastRouteChange(newPath);
-          const newState = this.getAnimationStateUpdate(newPath);
-          this.setAnimationState(newState);
-        });
+        (isLoggedIn) => this.isLoggedIn = isLoggedIn);
   }
 
-  ngOnDestroy() {
-    this.routerNavEventSubscription.unsubscribe();
+
+  openLogin(template: TemplateRef<any>) {
+    this.incorrectCredentials = false;
+    this.connectionFailure = false;
+    this.modalRef = this.modalService.show(template);
   }
 
-  onRouteSelected(selectedRoute: {path: string, state: string}) {
-    /*Timer delay used on route selection as Angular framework
-    has a bug that does not allow exiting shared using the
-    routerLink directive. */
-    const path = selectedRoute.path.split('/', 1)[0];
-    this.navService.broadcastRouteChange(path);
-    const timerObs = timer(500);
-    timerObs.subscribe(() => {
-      this.setAnimationState(selectedRoute.state);
-      this.router.navigate([`/${selectedRoute.path}`]);
-    });
+  onLogin() {
+    this.authService.login(this.email, this.password)
+      .subscribe(
+        (res) => {
+          const token = JSON.stringify(res['token']);
+          sessionStorage.setItem('token', token);
+          this.authService.updateLoggedIn(true);
+        },
+        (err) => {
+          const incorrectCredentials = 404;
+          if (err.status === incorrectCredentials) {
+            this.incorrectCredentials = true;
+          } else {
+            this.connectionFailure = true;
+          }
+        }
+      );
   }
 
-  setAnimationState(newState: string) {
-    this.state = newState;
+  onLogout() {
+    sessionStorage.clear();
+    this.authService.updateLoggedIn(false);
   }
 
-  getAnimationStateUpdate(newPath: string) {
-    return this.routes.find(function(route) {
-      return route.path === newPath;
-    }).state;
+  scrollToElement(elementId: string) {
+    const e = document.querySelector('#' + elementId);
+    if (e) {
+      e.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 }
