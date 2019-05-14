@@ -36,14 +36,14 @@
 }
 
 #container-titles {
-  margin-top: 75px;
+  margin-top: 10%;
   background-color: rgba(236, 59, 239, 0.4);
   padding: 15px;
   width: 100%;
 }
 
 #container-name {
-  margin-top: 75px;
+  margin-top: 1vh;
   background-color: rgba(236, 59, 239, 0.30);
   padding: 15px;
   width: 100%;
